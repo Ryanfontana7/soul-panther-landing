@@ -56,14 +56,14 @@
       -webkit-backdrop-filter: blur(20px);
     }
     .nav-logo {
-      font-size: 10px; font-weight: 200;
+      font-size: 12px; font-weight: 200;
       letter-spacing: 0.3em; text-transform: uppercase;
     }
     .nav-links {
       display: flex; gap: clamp(20px, 3vw, 52px); list-style: none;
     }
     .nav-links a {
-      font-size: 9px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.24em; text-transform: uppercase;
       color: var(--muted); transition: color 0.4s var(--ease);
     }
@@ -71,7 +71,7 @@
     .nav-links a.active { color: var(--fg); }
 
     .nav-listen {
-      font-size: 9px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.24em; text-transform: uppercase;
       color: var(--accent); transition: color 0.3s;
     }
@@ -123,7 +123,7 @@
     .back-link {
       position: relative;
       display: inline-flex; align-items: center; gap: 10px;
-      font-size: 8px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.24em; text-transform: uppercase;
       color: var(--muted); margin-bottom: 52px;
       transition: color 0.4s var(--ease);
@@ -133,8 +133,8 @@
 
     .article-eyebrow {
       position: relative;
-      font-size: 8px; font-weight: 200;
-      letter-spacing: 0.44em; text-transform: uppercase;
+      font-size: 11px; font-weight: 200;
+      letter-spacing: 0.3em; text-transform: uppercase;
       color: var(--copper);
       margin-bottom: 22px;
     }
@@ -162,7 +162,7 @@
       display: flex; align-items: center; gap: 24px;
     }
     .article-date {
-      font-size: 8px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.2em; color: var(--muted);
       white-space: nowrap;
     }
@@ -186,6 +186,12 @@
       font-weight: 200; letter-spacing: 0.08em;
       line-height: 1.3; color: var(--accent);
       margin: 64px 0 22px;
+    }
+    /* the essay's two central questions — brighter gold, larger, set apart from the rest */
+    .article-body h2.key-q {
+      font-size: clamp(20px, 2.4vw, 27px);
+      font-weight: 200; letter-spacing: 0.04em;
+      color: var(--accent-bright);
     }
     .article-body hr {
       border: none;
@@ -285,7 +291,7 @@
     }
     .reel-frame iframe { width: 100%; height: 100%; display: block; }
     figure.reel figcaption {
-      font-size: 9px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.14em; color: var(--muted);
       text-align: center; margin-top: 12px;
     }
@@ -300,7 +306,7 @@
       border-radius: 10px; border: 1px solid var(--border);
     }
     figure.player figcaption {
-      font-size: 9px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.14em; color: var(--muted);
       text-align: center; margin-top: 12px;
     }
@@ -315,7 +321,7 @@
       border: 1px solid var(--border); border-radius: 14px;
     }
     figure.map figcaption {
-      font-size: 9px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.14em; color: var(--muted);
       text-align: center; margin-top: 12px;
     }
@@ -368,20 +374,20 @@
       flex-wrap: wrap; margin-bottom: 28px;
     }
     .footer-links a {
-      font-size: 9px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.22em; text-transform: uppercase;
       color: var(--muted); transition: color 0.3s;
     }
     .footer-links a:hover { color: var(--fg); }
     .footer-sig {
       text-align: center;
-      font-size: 9px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.3em; text-transform: uppercase;
       color: var(--copper); margin-bottom: 8px;
     }
     .footer-copy {
       text-align: center;
-      font-size: 8px; font-weight: 200;
+      font-size: 11px; font-weight: 200;
       letter-spacing: 0.12em; color: var(--dim);
     }
 
@@ -648,7 +654,7 @@
 
   <hr>
 
-  <h2>So: where's your line?</h2>
+  <h2 class="key-q">So: where's your line?</h2>
 
   <p>I don't want to end this by telling you the right way, because I don't believe there is one. Every artist gets to find their own line in the sand.</p>
 
