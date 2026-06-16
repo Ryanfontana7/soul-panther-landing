@@ -302,7 +302,7 @@
       max-width: 34rem;
     }
     figure.player iframe {
-      display: block; width: 100%;
+      display: block; width: 100%; height: 152px;
       border-radius: 10px; border: 1px solid var(--border);
     }
     figure.player figcaption {
@@ -363,6 +363,8 @@
       max-width: 480px; margin: 0 auto;
       height: 380px; overflow: hidden; border-radius: 16px;
     }
+    /* cross-origin embed — can't restyle internals; dim the pure-white header/icons toward body copy off-white */
+    .laylo-wrap iframe { filter: brightness(0.86); }
 
     /* ── ARTICLE FOOTER ── */
     .article-footer {
