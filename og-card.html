@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  .card {
+    position: relative; width: 1200px; height: 630px; overflow: hidden;
+    background: #0a0807;
+    font-family: 'Raleway', sans-serif;
+    padding: 84px 88px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  /* warm radial glow, top-right — echoes the article header */
+  .glow {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(48% 70% at 82% 18%, rgba(196,163,90,0.30), rgba(160,120,50,0.10) 40%, transparent 70%);
+  }
+  /* faint ensō rings */
+  .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(196,163,90,0.10); }
+  .ring.a { width: 540px; height: 540px; top: -120px; right: -90px; }
+  .ring.b { width: 760px; height: 760px; top: -220px; right: -210px; border-color: rgba(196,163,90,0.06); }
+  .ring.c { width: 320px; height: 320px; top: -10px; right: 60px; border-color: rgba(196,163,90,0.13); }
+
+  .eyebrow {
+    position: relative;
+    font-size: 22px; font-weight: 300;
+    letter-spacing: 0.42em; text-transform: uppercase;
+    color: #b0703a; margin-bottom: 30px;
+  }
+  .title {
+    position: relative;
+    font-size: 104px; font-weight: 100; line-height: 1;
+    letter-spacing: 0.01em;
+    background: linear-gradient(180deg, #f1da9c 0%, #cba55f 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .rule { position: relative; width: 116px; height: 1px; background: #c4a35a; margin: 36px 0 34px; }
+  .sub {
+    position: relative;
+    font-size: 30px; font-weight: 300; line-height: 1.5;
+    letter-spacing: 0.005em; color: #cfc8ba; max-width: 740px;
+  }
+  .foot {
+    position: absolute; left: 88px; right: 88px; bottom: 72px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wordmark {
+    font-size: 24px; font-weight: 300;
+    letter-spacing: 0.36em; text-transform: uppercase; color: #b0703a;
+  }
+  .domain {
+    font-size: 24px; font-weight: 300;
+    letter-spacing: 0.18em; color: #8d8476;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="glow"></div>
+    <div class="ring b"></div>
+    <div class="ring a"></div>
+    <div class="ring c"></div>
+    <div class="eyebrow">An Essay</div>
+    <div class="title">The Line in the Sand</div>
+    <div class="rule"></div>
+    <div class="sub">What 800,000 views and a wave of hate taught me about AI, soul, and where creative value actually lives.</div>
+    <div class="foot">
+      <div class="wordmark">Soul Panther</div>
+      <div class="domain">soul-panther.com</div>
+    </div>
+  </div>
+</body>
+</html>
