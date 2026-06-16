@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Words — Soul Panther</title>
+  <meta name="description" content="Essays on music, feeling, and aliveness by Soul Panther.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #000000;
+      --surface:   #0d0c0a;
+      --fg:        #e4e0d5;
+      --muted:     #524d46;
+      --dim:       #282420;
+      --border:    rgba(228, 224, 213, 0.07);
+      --accent:    #c4a35a;
+      --accent-dim: rgba(196, 163, 90, 0.25);
+
+      --font: 'Raleway', system-ui, -apple-system, sans-serif;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      --px:  clamp(24px, 6vw, 96px);
+      --max: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      font-weight: 300;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 22px var(--px);
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .nav-logo {
+      font-size: 10px; font-weight: 200;
+      letter-spacing: 0.3em; text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; gap: clamp(20px, 3vw, 52px); list-style: none;
+    }
+    .nav-links a {
+      font-size: 9px; font-weight: 200;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.4s var(--ease);
+    }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-links a.active { color: var(--fg); }
+
+    .nav-burger {
+      display: none; flex-direction: column; gap: 6px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-burger span {
+      display: block; width: 20px; height: 1px; background: var(--fg);
+      transition: all 0.3s var(--ease);
+    }
+    .nav-burger.open span:first-child  { transform: rotate(45deg) translate(4.5px, 5px); }
+    .nav-burger.open span:last-child   { transform: rotate(-45deg) translate(4.5px, -5px); }
+
+    .nav-drawer {
+      position: fixed; inset: 0; z-index: 90; background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 44px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+    }
+    .nav-drawer.open { opacity: 1; pointer-events: all; }
+    .nav-drawer a {
+      font-size: clamp(26px, 6vw, 42px); font-weight: 100;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.3s;
+    }
+    .nav-drawer a:hover { color: var(--fg); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: clamp(120px, 18vh, 200px) var(--px) clamp(60px, 8vh, 100px);
+      max-width: calc(var(--max) + var(--px) * 2);
+      margin: 0 auto;
+    }
+    .page-eyebrow {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.44em; text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+    .page-title {
+      font-size: clamp(44px, 9vw, 110px);
+      font-weight: 100;
+      letter-spacing: clamp(0.18em, 2.4vw, 0.4em);
+      line-height: 1;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .page-sub {
+      font-size: clamp(9px, 0.9vw, 12px); font-weight: 200;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── ESSAY LIST ── */
+    .essays {
+      padding: 0 var(--px) clamp(100px, 14vh, 172px);
+      max-width: calc(var(--max) + var(--px) * 2);
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+    .essay-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 28px;
+      align-items: baseline;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      transition: opacity 0.4s var(--ease);
+      text-decoration: none;
+      color: inherit;
+    }
+    .essay-item:hover { opacity: 0.5; }
+
+    .essay-date {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.16em; color: var(--muted);
+      padding-top: 2px;
+    }
+    .essay-info {}
+    .essay-title {
+      font-size: clamp(14px, 1.4vw, 18px);
+      font-weight: 200; letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+    .essay-excerpt {
+      font-size: 12px; font-weight: 300;
+      letter-spacing: 0.02em; color: var(--muted);
+      line-height: 1.6;
+    }
+    .essay-arr {
+      font-size: 12px; color: var(--muted);
+      flex-shrink: 0; align-self: center;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 30px var(--px);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: none;
+    }
+    .footer-logo {
+      font-size: 9px; font-weight: 100;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted);
+    }
+    .footer-copy {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.14em; color: var(--muted); opacity: 0.45;
+    }
+    .footer-home {
+      font-size: 9px; font-weight: 200;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.4s var(--ease);
+    }
+    .footer-home:hover { color: var(--fg); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+
+      .essay-item {
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+      }
+      .essay-date { display: none; }
+      .essay-excerpt { display: none; }
+
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+
+    @media (max-width: 479px) {
+      .essay-item { grid-template-columns: 1fr; }
+      .essay-arr { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Soul Panther</a>
+  <ul class="nav-links">
+    <li><a href="index.html#bio">Bio</a></li>
+    <li><a href="index.html#music">Music</a></li>
+    <li><a href="index.html#film">Film</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="words.html" class="active">Words</a></li>
+    <li><a href="index.html#connect">Connect</a></li>
+  </ul>
+  <button class="nav-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-drawer" id="drawer" role="dialog" aria-label="Navigation">
+  <a href="index.html#bio"     onclick="closeDrawer()">Bio</a>
+  <a href="index.html#music"   onclick="closeDrawer()">Music</a>
+  <a href="index.html#film"    onclick="closeDrawer()">Film</a>
+  <a href="index.html#gallery" onclick="closeDrawer()">Gallery</a>
+  <a href="words.html"         onclick="closeDrawer()">Words</a>
+  <a href="index.html#connect" onclick="closeDrawer()">Connect</a>
+</div>
+
+<header class="page-header">
+  <div class="page-eyebrow">Essays</div>
+  <h1 class="page-title">Words</h1>
+  <p class="page-sub">Writing on music, feeling, and aliveness</p>
+</header>
+
+<main class="essays">
+  <a href="words-post.html" class="essay-item">
+    <span class="essay-date">2025 · 06</span>
+    <div class="essay-info">
+      <div class="essay-title">On Making People Feel Alive: The Soul Panther Manifesto</div>
+      <div class="essay-excerpt">What it means to build a music project around a single mission — and why that mission is the only thing that matters.</div>
+    </div>
+    <span class="essay-arr">→</span>
+  </a>
+
+  <a href="ancient-and-modern.html" class="essay-item">
+    <span class="essay-date">2025 · 04</span>
+    <div class="essay-info">
+      <div class="essay-title">Ancient and Modern: On the Balance of Opposites in Electronic Music</div>
+      <div class="essay-excerpt">Primal drum patterns under synthesized melody. Tribal ritual inside a concert hall. The tension is the point.</div>
+    </div>
+    <span class="essay-arr">→</span>
+  </a>
+
+  <a href="ma-negative-space.html" class="essay-item">
+    <span class="essay-date">2025 · 02</span>
+    <div class="essay-info">
+      <div class="essay-title">Ma: The Power of Negative Space in Sound and Life</div>
+      <div class="essay-excerpt">The Japanese concept of ma — meaningful emptiness — and how it shapes the way Soul Panther approaches production, performance, and design.</div>
+    </div>
+    <span class="essay-arr">→</span>
+  </a>
+
+  <a href="expensive-through-emptiness.html" class="essay-item">
+    <span class="essay-date">2024 · 11</span>
+    <div class="essay-info">
+      <div class="essay-title">Expensive Through Emptiness</div>
+      <div class="essay-excerpt">Why restraint is a design principle, a production philosophy, and a way of being in the world.</div>
+    </div>
+    <span class="essay-arr">→</span>
+  </a>
+
+  <a href="mythic-in-the-club.html" class="essay-item">
+    <span class="essay-date">2024 · 09</span>
+    <div class="essay-info">
+      <div class="essay-title">The Mythic in the Club: On Making Electronic Music Feel Sacred</div>
+      <div class="essay-excerpt">Dance music has always been ritual. We forgot. Here is how to remember.</div>
+    </div>
+    <span class="essay-arr">→</span>
+  </a>
+</main>
+
+<footer>
+  <span class="footer-logo">Soul Panther</span>
+  <a href="index.html" class="footer-home">Back to home</a>
+  <span class="footer-copy">&copy; 2025</span>
+</footer>
+
+<script>
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  let open = false;
+
+  burger.addEventListener('click', () => {
+    open = !open;
+    drawer.classList.toggle('open', open);
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  function closeDrawer() {
+    open = false;
+    drawer.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+</script>
+</body>
+</html>

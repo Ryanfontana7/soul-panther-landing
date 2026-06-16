@@ -1,0 +1,977 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soul Panther</title>
+  <meta name="description" content="Cinematic electronic music. To make people feel deeply alive.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       SOUL PANTHER
+       Void black · Raleway ultra-thin · Amber accent #c4a35a
+       Japanese ma: emptiness is the content
+       ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #000000;
+      --surface: #0d0c0a;
+      --fg:      #e4e0d5;
+      --muted:   #524d46;
+      --dim:     #282420;
+      --border:  rgba(228, 224, 213, 0.07);
+      --accent:  #c4a35a;
+      --accent-dim: rgba(196, 163, 90, 0.25);
+
+      --font:  'Raleway', system-ui, -apple-system, sans-serif;
+      --ease:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      --px:  clamp(24px, 6vw, 96px);
+      --py:  clamp(96px, 13vh, 172px);
+      --max: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      font-weight: 300;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ──────────────────────────────────────────────────── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 22px var(--px);
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid transparent;
+      transition: background 0.6s var(--ease), border-color 0.6s var(--ease);
+    }
+    #nav.scrolled {
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-size: 10px; font-weight: 200;
+      letter-spacing: 0.3em; text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; gap: clamp(20px, 3vw, 52px); list-style: none;
+    }
+    .nav-links a {
+      font-size: 9px; font-weight: 200;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.4s var(--ease);
+    }
+    .nav-links a:hover { color: var(--fg); }
+
+    .nav-burger {
+      display: none; flex-direction: column; gap: 6px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-burger span {
+      display: block; width: 20px; height: 1px; background: var(--fg);
+      transition: all 0.3s var(--ease);
+    }
+    .nav-burger.open span:first-child  { transform: rotate(45deg) translate(4.5px, 5px); }
+    .nav-burger.open span:last-child   { transform: rotate(-45deg) translate(4.5px, -5px); }
+
+    .nav-drawer {
+      position: fixed; inset: 0; z-index: 90; background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 44px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+    }
+    .nav-drawer.open { opacity: 1; pointer-events: all; }
+    .nav-drawer a {
+      font-size: clamp(26px, 6vw, 42px); font-weight: 100;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.3s;
+    }
+    .nav-drawer a:hover { color: var(--fg); }
+
+    /* ── SECTION BASE ─────────────────────────────────────────── */
+    .s {
+      padding: var(--py) var(--px);
+      max-width: calc(var(--max) + var(--px) * 2);
+      margin: 0 auto;
+    }
+    .s--border { border-top: 1px solid var(--border); }
+
+    .eyebrow {
+      font-size: 11px; font-weight: 200;
+      letter-spacing: 0.36em; text-transform: uppercase;
+      color: rgba(228, 224, 213, 0.5);
+      margin-bottom: clamp(48px, 7vh, 92px);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0; transform: translateY(22px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    #hero {
+      height: 100svh; min-height: 560px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 0 var(--px);
+      position: relative;
+    }
+    .hero-title {
+      font-size: clamp(46px, 10vw, 148px);
+      font-weight: 100;
+      letter-spacing: clamp(0.2em, 2.8vw, 0.48em);
+      line-height: 1;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: riseIn 1.6s var(--ease) 0.2s forwards;
+    }
+    .hero-rule {
+      width: 30px; height: 1px;
+      background: var(--accent);
+      margin: clamp(28px, 4vh, 48px) auto;
+      opacity: 0;
+      animation: fadeIn 1s var(--ease) 0.9s forwards;
+    }
+    .hero-sub {
+      font-size: clamp(11px, 1.1vw, 13px); font-weight: 200;
+      letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeIn 1s var(--ease) 1.1s forwards;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 12px;
+      opacity: 0;
+      animation: fadeIn 1s var(--ease) 2s forwards;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+      animation: breathe 2.8s ease-in-out infinite 2.2s;
+    }
+    .hero-scroll-label {
+      font-size: 7px; font-weight: 200;
+      letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── BIO ──────────────────────────────────────────────────── */
+    .bio-grid {
+      display: grid;
+      grid-template-columns: 40fr 60fr;
+      gap: clamp(40px, 6vw, 104px);
+      align-items: start;
+    }
+    .bio-aside { position: sticky; top: 96px; }
+    .bio-name {
+      font-size: clamp(18px, 2.2vw, 30px);
+      font-weight: 100; letter-spacing: 0.14em;
+      text-transform: uppercase; line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .bio-genre {
+      font-size: 11px; font-weight: 200;
+      letter-spacing: 0.36em; text-transform: uppercase;
+      color: rgba(228, 224, 213, 0.5);
+    }
+    .bio-photo-wrap {
+      position: relative; overflow: hidden;
+      width: 100%; margin-bottom: 0;
+      border: 1px solid var(--border);
+    }
+    .bio-photo-img {
+      width: 100%; display: block;
+      aspect-ratio: 3/4; object-fit: cover;
+      object-position: center 15%;
+      filter: grayscale(8%) brightness(0.92);
+      transition: filter 0.8s var(--ease);
+    }
+    .bio-photo-wrap:hover .bio-photo-img {
+      filter: grayscale(0%) brightness(1);
+    }
+    .bio-photo-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 48px 20px 22px;
+      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, transparent 100%);
+    }
+    .bio-photo-overlay .bio-name {
+      margin-bottom: 8px;
+      font-size: clamp(26px, 4vw, 52px);
+    }
+    .bio-photo-overlay .bio-genre { color: var(--muted); }
+.bio-body p {
+      font-size: clamp(14px, 1.3vw, 17px);
+      font-weight: 300; line-height: 1.9;
+      color: var(--fg); margin-bottom: 22px;
+    }
+    .bio-body p:last-of-type { margin-bottom: 0; }
+    .bio-tags {
+      display: flex; flex-wrap: wrap; gap: 6px 20px;
+      margin-top: 44px; padding-top: 36px;
+      border-top: 1px solid var(--border);
+    }
+    .bio-tag {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    /* ── MUSIC ────────────────────────────────────────────────── */
+    .music-featured {
+      margin-bottom: clamp(40px, 6vh, 72px);
+    }
+    .music-featured-label {
+      font-size: 7px; font-weight: 200;
+      letter-spacing: 0.34em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 14px;
+    }
+    .music-featured-title {
+      font-size: clamp(22px, 3vw, 38px); font-weight: 100;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .music-featured iframe {
+      display: block; width: 100%; border: none; border-radius: 3px;
+    }
+    .music-embed-wrap {
+      border-radius: 3px; overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(196, 163, 90, 0.20),
+        0 0 32px rgba(196, 163, 90, 0.06);
+    }
+    .music-catalog-label {
+      font-size: 7px; font-weight: 200;
+      letter-spacing: 0.34em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 14px;
+      padding-top: clamp(36px, 5vh, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .music-catalog iframe {
+      display: block; width: 100%; border: none; border-radius: 2px;
+    }
+
+    .music-video {
+      width: 100%; aspect-ratio: 16/9;
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: 2px;
+      overflow: hidden; position: relative;
+    }
+    .music-video iframe { width: 100%; height: 100%; border: none; display: block; }
+    .video-ph {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 18px;
+    }
+    .play-ring {
+      width: 46px; height: 46px;
+      border: 1px solid var(--border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .play-ring::after {
+      content: '';
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 13px solid var(--muted);
+      margin-left: 3px;
+    }
+    .video-ph span {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ── FILM ─────────────────────────────────────────────────── */
+    .film-frame {
+      width: 100%; aspect-ratio: 16/9;
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: 2px;
+      overflow: hidden; position: relative;
+    }
+    .film-frame iframe { width: 100%; height: 100%; border: none; display: block; }
+    .film-ph {
+      position: absolute; inset: 0;
+      background: linear-gradient(155deg, #0c0a08 0%, #040303 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px;
+    }
+    .film-ph-title {
+      font-size: clamp(18px, 2.4vw, 34px);
+      font-weight: 100; letter-spacing: 0.22em; text-transform: uppercase;
+    }
+    .film-ph-sub {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ── GALLERY ──────────────────────────────────────────────── */
+    .gallery-stage {
+      width: 100%; aspect-ratio: 16/9;
+      max-height: 82svh;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      cursor: pointer;
+    }
+    .g-slide {
+      position: absolute; inset: 0;
+      opacity: 0; transition: opacity 1s var(--ease);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .g-slide.active { opacity: 1; }
+    .g-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .g-ph {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .g-ph-num {
+      font-size: 9px; font-weight: 200;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim);
+    }
+
+    .gallery-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 18px; padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .g-count {
+      font-size: 9px; font-weight: 200;
+      letter-spacing: 0.2em; color: var(--muted);
+    }
+    .g-count .cur { color: var(--fg); }
+    .g-nav { display: flex; gap: 36px; }
+    .g-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: var(--font); font-size: 9px; font-weight: 200;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); padding: 12px 0;
+      min-height: 44px; display: inline-flex; align-items: center;
+      transition: color 0.3s var(--ease);
+    }
+    .g-btn:hover { color: var(--fg); }
+    .g-caption {
+      margin-top: 12px; font-size: 9px; font-weight: 200;
+      letter-spacing: 0.1em; color: var(--muted);
+    }
+
+    /* ── WORDS ────────────────────────────────────────────────── */
+    .words-list { list-style: none; }
+    .words-item {
+      display: flex; align-items: baseline;
+      justify-content: space-between; gap: 20px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .words-item:first-child { border-top: 1px solid var(--border); }
+    .words-link {
+      display: flex; align-items: baseline; gap: 28px; flex: 1;
+      transition: opacity 0.4s var(--ease);
+    }
+    .words-link:hover { opacity: 0.5; }
+    .words-date {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.16em; color: var(--muted);
+      flex-shrink: 0; min-width: 68px;
+    }
+    .words-title {
+      font-size: clamp(13px, 1.2vw, 16px);
+      font-weight: 200; letter-spacing: 0.03em;
+    }
+    .words-arr { font-size: 12px; color: var(--muted); flex-shrink: 0; }
+
+    .words-cta {
+      display: inline-flex; align-items: center; gap: 12px;
+      margin-top: 44px; font-size: 9px; font-weight: 200;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.4s var(--ease);
+    }
+    .words-cta:hover { color: var(--fg); }
+    .words-cta::after { content: '→'; }
+
+    /* ── CONNECT ──────────────────────────────────────────────── */
+    #connect {
+      text-align: center;
+      padding-left: clamp(24px, 8vw, 120px);
+      padding-right: clamp(24px, 8vw, 120px);
+    }
+    .connect-heading {
+      font-size: clamp(28px, 6vw, 92px);
+      font-weight: 100;
+      letter-spacing: 0.16em;
+      line-height: 1.1; text-transform: uppercase;
+      margin-bottom: clamp(40px, 6vh, 72px);
+      margin-top: 0;
+    }
+    .connect-socials {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 6px 44px;
+      margin-bottom: clamp(36px, 5vh, 60px);
+    }
+    .social-link {
+      font-size: 9px; font-weight: 200;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.4s var(--ease);
+    }
+    .social-link:hover { color: var(--fg); }
+    .connect-email {
+      font-size: clamp(12px, 1.3vw, 15px); font-weight: 200;
+      letter-spacing: 0.06em; color: var(--accent);
+      border-bottom: 1px solid var(--accent-dim);
+      padding-bottom: 2px;
+      transition: opacity 0.4s;
+    }
+    .connect-email:hover { opacity: 0.6; }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    footer {
+      padding: 30px var(--px);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      font-size: 9px; font-weight: 100;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted);
+    }
+    .footer-copy {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.14em; color: var(--muted); opacity: 0.45;
+    }
+
+    /* ── ANIMATIONS ───────────────────────────────────────────── */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scaleY(1); opacity: 0.4; }
+      50%       { transform: scaleY(0.55); opacity: 0.9; }
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+
+      .bio-grid {
+        grid-template-columns: 1fr;
+        gap: 44px;
+      }
+      .bio-aside { position: static; }
+
+      .words-link { flex-wrap: wrap; gap: 4px; }
+      .words-date { min-width: auto; }
+
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+
+    @media (max-width: 479px) {
+      .music-embeds { grid-template-columns: 1fr; }
+      .connect-socials { gap: 6px 28px; }
+    }
+
+    /* Clamp gallery to max-width on large screens */
+    .gallery-wrap { max-width: 900px; margin: 0 auto; }
+
+    /* Respect reduced-motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { transition: none; opacity: 1; transform: none; }
+      .hero-title, .hero-rule, .hero-sub, .hero-scroll { animation: none; opacity: 1; }
+      .hero-scroll-line { animation: none; }
+      #bg-canvas { display: none; }
+    }
+
+    /* ── WEBGL BACKGROUND CANVAS ──────────────────────────────── */
+    #bg-canvas {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      z-index: -1; display: block;
+      pointer-events: none;
+    }
+  </style>
+  <script src="https://embed.laylo.com/laylo-sdk.js"></script>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- ── NAV ──────────────────────────────────────────────────────── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Soul Panther</a>
+  <ul class="nav-links">
+    <li><a href="#bio">Bio</a></li>
+    <li><a href="#music">Music</a></li>
+    <li><a href="#film">Film</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#words">Words</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+  <button class="nav-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-drawer" id="drawer" role="dialog" aria-label="Navigation">
+  <a href="#bio"     onclick="closeDrawer()">Bio</a>
+  <a href="#music"   onclick="closeDrawer()">Music</a>
+  <a href="#film"    onclick="closeDrawer()">Film</a>
+  <a href="#gallery" onclick="closeDrawer()">Gallery</a>
+  <a href="#words"   onclick="closeDrawer()">Words</a>
+  <a href="#connect" onclick="closeDrawer()">Connect</a>
+</div>
+
+<!-- ── HERO ─────────────────────────────────────────────────────── -->
+<div id="hero">
+  <h1 class="hero-title">Soul Panther</h1>
+  <div class="hero-rule"></div>
+  <p class="hero-sub">Cinematic Electronic Music</p>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span class="hero-scroll-label">Scroll</span>
+  </div>
+</div>
+
+<!-- ── BIO ──────────────────────────────────────────────────────── -->
+<section class="s s--border reveal" id="bio">
+  <div class="eyebrow">Bio</div>
+  <div class="bio-grid">
+    <div class="bio-aside">
+      <div class="bio-photo-wrap">
+        <img class="bio-photo-img" src="mqexbqe3-SP-future-lightbeam-side-orange.jpg" alt="Soul Panther" loading="lazy">
+        <div class="bio-photo-overlay">
+          <div class="bio-name">Soul<br>Panther</div>
+          <div class="bio-genre">Electronic · Cinematic</div>
+        </div>
+      </div>
+    </div>
+    <div class="bio-body">
+      <p>I make music to make you feel deeply alive.</p>
+      <p>I spent years touring the world chasing the high — then I woke up, walked away, and came back with one intention: to bring soul back into dance music.</p>
+      <p>I chased that mission across every sound I could find. It led me here — to Temple Trap: handpan and ancient instruments over 808s and modern beats. Hypnotic, percussive, primal — ancient texture woven through cinematic electronic music, built to move your body and the deeper parts of you at once.</p>
+      <p>A balance of opposites — ancient and modern, sacred and primal, ethereal yet deep.</p>
+      <p>This is dance music with a soul, for the sacred rebels — the ones who refuse to choose between the spiritual and the visceral. Welcome home.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── MUSIC ────────────────────────────────────────────────────── -->
+<section class="s s--border reveal" id="music">
+  <div class="eyebrow">Music</div>
+
+  <div class="music-featured">
+    <div class="music-featured-label">Featured Release</div>
+    <div class="music-featured-title">Ancient Whispers</div>
+    <div class="music-embed-wrap">
+      <iframe
+        src="https://open.spotify.com/embed/track/0QGlGObp27TCtjZtTyJRnc?utm_source=generator&theme=0"
+        height="152"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
+    </div>
+  </div>
+
+  <div class="music-catalog">
+    <div class="music-catalog-label">All Music</div>
+    <div class="music-embed-wrap">
+      <iframe
+        src="https://open.spotify.com/embed/artist/0VXB0OFzi2c8iNB6fuyZxg?utm_source=generator&theme=0"
+        height="352"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ── FILM ──────────────────────────────────────────────────────── -->
+<section class="s s--border reveal" id="film">
+  <div class="eyebrow">Film</div>
+  <div class="film-frame">
+    <iframe
+      src="https://www.youtube.com/embed/hfaMafSV0bE?start=388&rel=0&modestbranding=1&origin=https://soul-panther.com"
+      title="Soul Panther — Visual Film"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      loading="lazy">
+    </iframe>
+  </div>
+</section>
+
+<!-- ── GALLERY ───────────────────────────────────────────────────── -->
+<section class="s s--border reveal" id="gallery">
+  <div class="eyebrow">Gallery</div>
+
+  <div class="gallery-wrap">
+    <div class="gallery-stage" id="g-stage"
+         role="region" aria-label="Image gallery"
+         aria-live="polite">
+      <div class="g-slide active" data-caption="Bali Spirit Festival">
+        <img src="mqfz6fhx-bali-spirit-fest-banner.png" alt="Soul Panther — Bali Spirit Festival" style="object-position: center center;">
+      </div>
+      <div class="g-slide" data-caption="Awakened Dreamers × Zest Ubud">
+        <img src="mqfz6fh7-AWAKENED-DREAMERS-X-ZEST-UBUD_38.jpg" alt="Soul Panther — Awakened Dreamers" style="object-position: center center;">
+      </div>
+      <div class="g-slide" data-caption="Awakened Dreamers × TJC">
+        <img src="mqfzlg3z-AWAKENED-DREAMERS-X-TJC-250426-51.JPG" alt="Soul Panther — Awakened Dreamers × TJC" style="object-position: center center;">
+      </div>
+    </div>
+
+    <div class="gallery-bar">
+      <div class="g-count">
+        <span class="cur" id="g-cur">01</span> / 03
+      </div>
+      <div class="g-nav">
+        <button class="g-btn" id="g-prev" aria-label="Previous image">Prev</button>
+        <button class="g-btn" id="g-next" aria-label="Next image">Next</button>
+      </div>
+    </div>
+    <div class="g-caption" id="g-caption" aria-live="polite">Bali Spirit Festival</div>
+  </div>
+</section>
+
+<!-- ── WORDS ────────────────────────────────────────────────────── -->
+<section class="s s--border reveal" id="words">
+  <div class="eyebrow">Words</div>
+
+  <ul class="words-list">
+    <li class="words-item">
+      <a href="the-line-in-the-sand.html" class="words-link">
+        <span class="words-date">2026 · 06</span>
+        <span class="words-title">The Line in the Sand</span>
+      </a>
+      <span class="words-arr">→</span>
+    </li>
+    <li class="words-item">
+      <a href="ancient-and-modern.html" class="words-link">
+        <span class="words-date">2025 · 04</span>
+        <span class="words-title">Ancient and Modern: On the Balance of Opposites in Electronic Music</span>
+      </a>
+      <span class="words-arr">→</span>
+    </li>
+    <li class="words-item">
+      <a href="ma-negative-space.html" class="words-link">
+        <span class="words-date">2025 · 02</span>
+        <span class="words-title">Ma: The Power of Negative Space in Sound and Life</span>
+      </a>
+      <span class="words-arr">→</span>
+    </li>
+    <li class="words-item">
+      <a href="expensive-through-emptiness.html" class="words-link">
+        <span class="words-date">2024 · 11</span>
+        <span class="words-title">Expensive Through Emptiness</span>
+      </a>
+      <span class="words-arr">→</span>
+    </li>
+    <li class="words-item">
+      <a href="mythic-in-the-club.html" class="words-link">
+        <span class="words-date">2024 · 09</span>
+        <span class="words-title">The Mythic in the Club</span>
+      </a>
+      <span class="words-arr">→</span>
+    </li>
+    <li class="words-item">
+      <a href="words-post.html" class="words-link">
+        <span class="words-date">2024 · 07</span>
+        <span class="words-title">On Making People Feel Alive</span>
+      </a>
+      <span class="words-arr">→</span>
+    </li>
+  </ul>
+
+  <a href="words.html" class="words-cta">All essays</a>
+</section>
+
+<!-- ── CONNECT ───────────────────────────────────────────────────── -->
+<section class="s s--border reveal" id="connect">
+  <h2 class="connect-heading">Live&nbsp;With&nbsp;Soul</h2>
+  <div class="connect-socials">
+    <a href="https://instagram.com/soul_panther" target="_blank" rel="noopener" class="social-link">Instagram</a>
+    <a href="https://open.spotify.com/artist/0VXB0OFzi2c8iNB6fuyZxg" target="_blank" rel="noopener" class="social-link">Spotify</a>
+    <a href="https://youtube.com/@soul_panther_music" target="_blank" rel="noopener" class="social-link">YouTube</a>
+    <a href="https://soundcloud.com/soul_panther" target="_blank" rel="noopener" class="social-link">SoundCloud</a>
+    <a href="https://soulpanther.bandcamp.com/" target="_blank" rel="noopener" class="social-link">Bandcamp</a>
+  </div>
+
+  <div class="laylo-wrap" style="width:100%;max-width:600px;margin:clamp(32px,5vh,56px) auto 0;">
+    <iframe
+      id="laylo-drop-5LHCq"
+      frameborder="0"
+      scrolling="no"
+      allow="web-share"
+      allowtransparency="true"
+      height="420"
+      style="width:1px;min-width:100%;max-width:600px;min-height:420px;border:none;display:block;"
+      src="https://embed.laylo.com?dropId=5LHCq&color=c4a35a&minimal=false&theme=dark&background=solid">
+    </iframe>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────────────────── -->
+<footer>
+  <span class="footer-logo">Soul Panther</span>
+  <span class="footer-copy">&copy; 2026</span>
+</footer>
+
+<script>
+  // ── WEBGL BACKGROUND ──────────────────────────────────────────
+  (function() {
+    const FRAG = `
+precision highp float;
+uniform vec2 u_res;
+uniform vec2 u_mouse;
+uniform float u_time;
+uniform vec2 u_click;
+uniform float u_click_t;
+
+float hash(vec2 p) {
+  p = fract(p * vec2(127.1, 311.7));
+  p += dot(p, p + 17.23);
+  return fract(p.x * p.y);
+}
+
+float noise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(
+    mix(hash(i),             hash(i + vec2(1.0,0.0)), f.x),
+    mix(hash(i + vec2(0.0,1.0)), hash(i + vec2(1.0,1.0)), f.x),
+    f.y);
+}
+
+float fbm(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 rot = mat2(1.6, 1.2, -1.2, 1.6);
+  for (int i = 0; i < 5; i++) {
+    v += a * noise(p);
+    p  = rot * p;
+    a *= 0.5;
+  }
+  return v;
+}
+
+void main() {
+  float asp = u_res.x / u_res.y;
+  vec2 p   = vec2(gl_FragCoord.x / u_res.y, gl_FragCoord.y / u_res.y);
+  vec2 ctr = vec2(asp * 0.5, 0.5);
+  vec2 m   = vec2(u_mouse.x * asp, u_mouse.y);
+  float T  = u_time * 0.030;
+
+  /* mouse pulls the fluid domain */
+  float md   = length(p - m);
+  vec2  moff = (m - p) / (md + 0.01) * 0.14 * exp(-md * 2.8);
+
+  /* double domain warp */
+  float q1 = fbm(p + T);
+  float q2 = fbm(p + vec2(5.2, 1.3) + T * 0.95);
+  vec2  q  = vec2(q1, q2) + moff * 0.4;
+
+  float r1 = fbm(p + 2.9*q + vec2(1.7, 9.2) + T*0.88);
+  float r2 = fbm(p + 2.9*q + vec2(8.3, 2.8) + T*0.79);
+  vec2  wp = p + 2.9*vec2(r1,r2) + moff;
+
+  float f = fbm(wp + T*0.55);
+
+  /* gradient → iridescent hue */
+  float eps = 0.007;
+  float fx  = fbm(wp + vec2(eps, 0.0) + T*0.55);
+  float fy  = fbm(wp + vec2(0.0, eps) + T*0.55);
+  vec2  grad = vec2(fx - f, fy - f) / eps;
+  float gLen = length(grad);
+  float ang  = atan(grad.y, grad.x) / 6.28318 + 0.5 + T*0.06;
+
+  /* base: warm void — deep amber-black */
+  vec3 base = mix(
+    vec3(0.010, 0.005, 0.000),
+    vec3(0.052, 0.024, 0.003),
+    smoothstep(0.28, 0.72, f)
+  );
+
+  /* warm copper / amber sheen — no violet, no blue */
+  vec3 iri = vec3(
+    0.55 + 0.30*cos(ang*6.28318),
+    0.28 + 0.20*cos(ang*6.28318 + 1.20),
+    0.04 + 0.06*cos(ang*6.28318 + 3.80)
+  );
+  float iriStr = smoothstep(0.25, 2.2, gLen) * 0.26;
+  vec3 col = base + iri * iriStr;
+
+  /* click: amber gold burst */
+  if (u_click_t > 0.0 && u_click_t < 3.5) {
+    vec2  cp    = vec2(u_click.x * asp, u_click.y);
+    float d     = length(p - cp);
+    float burst = exp(-d * 2.6) * exp(-u_click_t * 1.9) * 1.0;
+    col += vec3(burst*0.54, burst*0.28, burst*0.04);
+  }
+
+  /* vignette */
+  float vig = 1.0 - smoothstep(0.28, 1.0, length(p - ctr));
+  col *= vig;
+
+  /* grain */
+  float gn = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898,78.233)))*43758.5453);
+  col += (gn - 0.5) * 0.028;
+
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+}
+`;
+
+    const canvas = document.getElementById('bg-canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function resize() {
+      canvas.width  = window.innerWidth  * dpr;
+      canvas.height = window.innerHeight * dpr;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function mkShader(type, src) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, mkShader(gl.VERTEX_SHADER, `attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}`));
+    gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+    const aLoc = gl.getAttribLocation(prog, 'a');
+    gl.enableVertexAttribArray(aLoc);
+    gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
+
+    const U = ['u_res','u_mouse','u_time','u_click','u_click_t'].reduce((o,n) => {
+      o[n] = gl.getUniformLocation(prog, n); return o;
+    }, {});
+
+    let mx=0.5, my=0.5, cx=0.5, cy=0.5, ct=-1;
+    const t0 = performance.now();
+
+    function getUV(e) {
+      return [e.clientX / window.innerWidth, 1.0 - e.clientY / window.innerHeight];
+    }
+    document.addEventListener('mousemove', e => { [mx,my] = getUV(e); });
+    document.addEventListener('click',     e => { [cx,cy] = getUV(e); ct = (performance.now()-t0)/1000; });
+    document.addEventListener('touchmove', e => { [mx,my] = getUV(e.touches[0]); }, {passive:true});
+
+    let rafId = null;
+    function loop() {
+      rafId = requestAnimationFrame(loop);
+      const t = (performance.now()-t0)/1000;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(U.u_res,     canvas.width, canvas.height);
+      gl.uniform2f(U.u_mouse,   mx, my);
+      gl.uniform1f(U.u_time,    t);
+      gl.uniform2f(U.u_click,   cx, cy);
+      gl.uniform1f(U.u_click_t, ct >= 0 ? t - ct : -1.0);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    loop();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { cancelAnimationFrame(rafId); rafId = null; }
+      else if (!rafId) loop();
+    });
+  })();
+
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 52);
+  }, { passive: true });
+
+  // Mobile drawer
+  const burger  = document.getElementById('burger');
+  const drawer  = document.getElementById('drawer');
+  let open = false;
+
+  burger.addEventListener('click', () => {
+    open = !open;
+    drawer.classList.toggle('open', open);
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  function closeDrawer() {
+    open = false;
+    drawer.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  // Scroll reveal
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -32px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // Gallery
+  const slides  = Array.from(document.querySelectorAll('.g-slide'));
+  const gCur    = document.getElementById('g-cur');
+  const gCap    = document.getElementById('g-caption');
+  let gi = 0;
+
+  function goTo(idx) {
+    slides[gi].classList.remove('active');
+    gi = (idx + slides.length) % slides.length;
+    slides[gi].classList.add('active');
+    gCur.textContent = String(gi + 1).padStart(2, '0');
+    gCap.textContent = slides[gi].dataset.caption || '';
+  }
+
+  document.getElementById('g-prev').addEventListener('click', () => goTo(gi - 1));
+  document.getElementById('g-next').addEventListener('click', () => goTo(gi + 1));
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  goTo(gi - 1);
+    if (e.key === 'ArrowRight') goTo(gi + 1);
+  });
+
+  // Touch swipe
+  const stage = document.getElementById('g-stage');
+  let tx = 0;
+  stage.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend',   e => {
+    const d = tx - e.changedTouches[0].clientX;
+    if (Math.abs(d) > 44) goTo(gi + (d > 0 ? 1 : -1));
+  }, { passive: true });
+</script>
+</body>
+</html>

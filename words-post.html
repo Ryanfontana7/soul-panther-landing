@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>On Making People Feel Alive — Soul Panther</title>
+  <meta name="description" content="What it means to build a music project around a single mission — and why that mission is the only thing that matters.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #000000;
+      --fg:        #e4e0d5;
+      --muted:     #524d46;
+      --dim:       #282420;
+      --border:    rgba(228, 224, 213, 0.07);
+      --accent:    #c4a35a;
+      --accent-dim: rgba(196, 163, 90, 0.25);
+
+      --font: 'Raleway', system-ui, -apple-system, sans-serif;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      --px:       clamp(24px, 6vw, 96px);
+      --text-max: 640px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      font-weight: 300;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 22px var(--px);
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .nav-logo {
+      font-size: 10px; font-weight: 200;
+      letter-spacing: 0.3em; text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; gap: clamp(20px, 3vw, 52px); list-style: none;
+    }
+    .nav-links a {
+      font-size: 9px; font-weight: 200;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.4s var(--ease);
+    }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-links a.active { color: var(--fg); }
+
+    .nav-burger {
+      display: none; flex-direction: column; gap: 6px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-burger span {
+      display: block; width: 20px; height: 1px; background: var(--fg);
+      transition: all 0.3s var(--ease);
+    }
+    .nav-burger.open span:first-child  { transform: rotate(45deg) translate(4.5px, 5px); }
+    .nav-burger.open span:last-child   { transform: rotate(-45deg) translate(4.5px, -5px); }
+
+    .nav-drawer {
+      position: fixed; inset: 0; z-index: 90; background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 44px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+    }
+    .nav-drawer.open { opacity: 1; pointer-events: all; }
+    .nav-drawer a {
+      font-size: clamp(26px, 6vw, 42px); font-weight: 100;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.3s;
+    }
+    .nav-drawer a:hover { color: var(--fg); }
+
+    /* ── ARTICLE HEADER ── */
+    .article-header {
+      padding: clamp(120px, 18vh, 200px) var(--px) clamp(60px, 8vh, 96px);
+      max-width: calc(var(--text-max) + var(--px) * 2);
+      margin: 0 auto;
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 56px;
+      transition: color 0.4s var(--ease);
+    }
+    .back-link:hover { color: var(--fg); }
+    .back-link::before { content: '←'; }
+
+    .article-eyebrow {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.44em; text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .article-title {
+      font-size: clamp(24px, 3.5vw, 46px);
+      font-weight: 100;
+      letter-spacing: 0.06em;
+      line-height: 1.22;
+      margin-bottom: 28px;
+    }
+    .article-meta {
+      display: flex; align-items: center; gap: 24px;
+    }
+    .article-date {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.2em; color: var(--muted);
+    }
+    .article-rule {
+      flex: 1; height: 1px;
+      background: var(--border);
+    }
+
+    /* ── ARTICLE BODY ── */
+    .article-body {
+      padding: clamp(56px, 8vh, 88px) var(--px) clamp(100px, 14vh, 172px);
+      max-width: calc(var(--text-max) + var(--px) * 2);
+      margin: 0 auto;
+    }
+    .article-body p {
+      font-size: clamp(14px, 1.35vw, 17px);
+      font-weight: 300; line-height: 1.95;
+      color: var(--fg); margin-bottom: 28px;
+    }
+    .article-body h2 {
+      font-size: clamp(16px, 1.8vw, 22px);
+      font-weight: 200; letter-spacing: 0.08em;
+      line-height: 1.3;
+      margin: 56px 0 22px;
+    }
+    .article-body blockquote {
+      border-left: 1px solid var(--accent-dim);
+      padding-left: 24px;
+      margin: 44px 0;
+    }
+    .article-body blockquote p {
+      font-size: clamp(15px, 1.5vw, 19px);
+      font-weight: 200; letter-spacing: 0.03em;
+      line-height: 1.75; color: var(--fg);
+      margin: 0;
+    }
+    .article-body .drop-cap::first-letter {
+      font-size: 3.6em; font-weight: 100;
+      line-height: 0.78; float: left;
+      margin: 6px 14px 0 0;
+      color: var(--fg);
+    }
+
+    /* ── ARTICLE FOOTER ── */
+    .article-footer {
+      border-top: 1px solid var(--border);
+      padding: clamp(44px, 6vh, 72px) var(--px);
+      max-width: calc(var(--text-max) + var(--px) * 2);
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .af-back {
+      font-size: 9px; font-weight: 200;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.4s var(--ease);
+    }
+    .af-back:hover { color: var(--fg); }
+    .af-back::before { content: '← '; }
+
+    .af-next {
+      font-size: 9px; font-weight: 200;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.4s var(--ease);
+    }
+    .af-next:hover { color: var(--fg); }
+    .af-next::after { content: ' →'; }
+
+    /* ── PAGE FOOTER ── */
+    footer {
+      padding: 30px var(--px);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      font-size: 9px; font-weight: 100;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted);
+    }
+    .footer-copy {
+      font-size: 8px; font-weight: 200;
+      letter-spacing: 0.14em; color: var(--muted); opacity: 0.45;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Soul Panther</a>
+  <ul class="nav-links">
+    <li><a href="index.html#bio">Bio</a></li>
+    <li><a href="index.html#music">Music</a></li>
+    <li><a href="index.html#film">Film</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="words.html" class="active">Words</a></li>
+    <li><a href="index.html#connect">Connect</a></li>
+  </ul>
+  <button class="nav-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-drawer" id="drawer" role="dialog" aria-label="Navigation">
+  <a href="index.html#bio"     onclick="closeDrawer()">Bio</a>
+  <a href="index.html#music"   onclick="closeDrawer()">Music</a>
+  <a href="index.html#film"    onclick="closeDrawer()">Film</a>
+  <a href="index.html#gallery" onclick="closeDrawer()">Gallery</a>
+  <a href="words.html"         onclick="closeDrawer()">Words</a>
+  <a href="index.html#connect" onclick="closeDrawer()">Connect</a>
+</div>
+
+<header class="article-header">
+  <a href="words.html" class="back-link">All essays</a>
+  <div class="article-eyebrow">Essay · June 2025</div>
+  <h1 class="article-title">On Making People Feel Alive: The Soul Panther Manifesto</h1>
+  <div class="article-meta">
+    <span class="article-date">2025 · 06</span>
+    <div class="article-rule"></div>
+  </div>
+</header>
+
+<article class="article-body">
+  <p class="drop-cap">There is a moment on a dance floor when something shifts. The music hasn't changed, but you have. The bass reaches somewhere the thinking mind can't, and for a second — maybe longer — you stop performing yourself. You just exist. You feel.</p>
+
+  <p>That moment is what Soul Panther is built to create.</p>
+
+  <p>Not atmosphere. Not vibes. Not background sound for a curated lifestyle moment. Something older, more animal, more necessary than any of those things. The feeling of being fully, unapologetically, embarrassingly alive.</p>
+
+  <blockquote>
+    <p>The goal was never to make good music. The goal was to make people feel something they couldn't find words for.</p>
+  </blockquote>
+
+  <h2>The Mission Before the Music</h2>
+
+  <p>Most projects start with sound. Soul Panther started with a question: what do people need that dance music used to give them, and stopped giving them? The answer kept coming back to the same thing. Permission. Permission to feel without apology. Permission to move without self-consciousness. Permission to be moved by something larger than their individual story.</p>
+
+  <p>Ancient cultures understood this. Ritual, ceremony, collective sound — these weren't entertainment. They were technology for expanding human experience. We lost that somewhere between the invention of recorded music and the invention of the algorithm.</p>
+
+  <h2>Balance as Method</h2>
+
+  <p>Every production decision in Soul Panther is a negotiation between opposites. Ancient percussion under modern synthesis. Organic texture against pristine electronic sound. Primal rhythm inside refined arrangement. The tension between these poles is where the music lives — and where the feeling comes from.</p>
+
+  <p>Japanese aesthetics gave this a name long before I had one: <em>ma</em>. Negative space. The pause between notes as important as the notes themselves. The emptiness that makes the fullness possible. Design through removal. Power through restraint.</p>
+
+  <h2>What This Means for You</h2>
+
+  <p>When you encounter Soul Panther — in a set, on a record, in a live experience — you are being invited into something specific. Not distracted. Not entertained. Invited.</p>
+
+  <p>The invitation is always the same: feel this. Feel it in your body before your mind arrives. Let it move you before you decide whether you like it. Trust the animal in you that knows before you know.</p>
+
+  <p>The mission is not to make you think differently. It is to make you feel more. And in feeling more, to remember what it is to be fully, completely, irreducibly human.</p>
+</article>
+
+<nav class="article-footer" aria-label="Essay navigation">
+  <a href="words.html" class="af-back">All essays</a>
+  <a href="words-post.html" class="af-next">Ancient and Modern</a>
+</nav>
+
+<footer>
+  <span class="footer-logo">Soul Panther</span>
+  <span class="footer-copy">&copy; 2025</span>
+</footer>
+
+<script>
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  let open = false;
+
+  burger.addEventListener('click', () => {
+    open = !open;
+    drawer.classList.toggle('open', open);
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  function closeDrawer() {
+    open = false;
+    drawer.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+</script>
+</body>
+</html>
