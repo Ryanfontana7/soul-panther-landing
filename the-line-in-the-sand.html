@@ -45,10 +45,19 @@
       --text-max: 660px;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      /* static echo of the homepage shader — warm amber-black void, no motion */
+      background-color: #000;
+      background-image:
+        radial-gradient(38% 30% at 70% 26%, rgba(196, 163, 90, 0.06), transparent 70%),
+        radial-gradient(44% 40% at 26% 76%, rgba(138, 102, 50, 0.045), transparent 72%),
+        radial-gradient(130% 100% at 50% 34%, #0d0703 0%, #070402 46%, #020101 78%, #000000 100%);
+      background-repeat: no-repeat;
+    }
 
     body {
-      background: var(--bg);
+      background: transparent;
       color: var(--fg);
       font-family: var(--font);
       font-weight: 300;
